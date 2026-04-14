@@ -3,9 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, Award, CheckCircle2, Clock3, History, RefreshCcw, Target, TrendingUp, XCircle } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
-const surface = 'rounded-3xl border border-white/10 bg-slate-900/75 shadow-[0_20px_60px_rgba(2,6,23,0.45)] backdrop-blur-xl'
-const btnSecondary = 'inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-slate-200 transition hover:border-white/20 hover:bg-white/10'
-
 interface ResultRow { result_id: string; score: number; status: 'pass' | 'fail'; created_at: string }
 interface AnswerRow { result_id: string; question_id: string; selected_answer: string; is_correct: boolean }
 interface QuestionRow { question_id: string; question_text: string }
@@ -65,78 +62,107 @@ export default function LearnerAssessmentHistory() {
   }, [answers])
 
   const metrics = [
-    { label: 'Total attempts', value: results.length, sub: 'Across this assessment', Icon: History, color: 'text-sky-300', bg: 'bg-sky-500/10' },
-    { label: 'Best score', value: `${bestScore}%`, sub: 'Highest attempt', Icon: Award, color: 'text-emerald-300', bg: 'bg-emerald-500/10' },
-    { label: 'Average score', value: `${average}%`, sub: 'Overall trend', Icon: TrendingUp, color: 'text-indigo-300', bg: 'bg-indigo-500/10' },
+    { label: 'Total attempts', value: results.length, sub: 'Across this assessment', Icon: History, color: 'text-sky-400', bg: 'bg-sky-500/10' },
+    { label: 'Best score', value: `${bestScore}%`, sub: 'Highest attempt', Icon: Award, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+    { label: 'Average score', value: `${average}%`, sub: 'Overall trend', Icon: TrendingUp, color: 'text-indigo-400', bg: 'bg-indigo-500/10' },
   ]
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute left-[-120px] top-[-120px] h-80 w-80 rounded-full bg-indigo-500/12 blur-3xl" />
-        <div className="absolute right-[-100px] bottom-[-80px] h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl" />
+    <div className="app-page">
+      {/* Background orbs */}
+      <div className="bg-orbs">
+        <div className="bg-orb bg-orb-primary bg-orb-tl" />
+        <div className="bg-orb bg-orb-secondary bg-orb-br" />
       </div>
 
       <div className="relative mx-auto w-full max-w-[1100px] px-4 py-8 sm:px-6 lg:px-8">
         <div className="grid gap-6">
-          <header className={`${surface} px-5 py-5 sm:px-6`}>
+
+          {/* ── Header ── */}
+          <header className="panel-raised px-5 py-5 sm:px-6 animate-rise">
             <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/15 text-indigo-300">
+                <div
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl"
+                  style={{ background: 'var(--primary-soft)', color: 'var(--primary)', border: '1px solid var(--primary-border)' }}
+                >
                   <Target className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Learner portal</p>
-                  <h1 className="mt-2 text-2xl font-semibold tracking-tight text-white sm:text-3xl">{title}</h1>
-                  <p className="mt-2 max-w-xl text-sm leading-6 text-slate-400">All your attempts for this assessment.</p>
+                  <p className="label-micro">Learner portal</p>
+                  <h1
+                    className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl"
+                    style={{ color: 'var(--text-main)', letterSpacing: '-0.025em' }}
+                  >
+                    {title}
+                  </h1>
+                  <p className="mt-2 max-w-xl text-sm leading-6" style={{ color: 'var(--text-secondary)' }}>
+                    All your attempts for this assessment.
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <button type="button" className={btnSecondary} onClick={() => void fetchHistory()}>
+                <button type="button" className="btn-secondary" onClick={() => void fetchHistory()}>
                   <RefreshCcw className="h-4 w-4" /> Refresh
                 </button>
-                <button type="button" className={btnSecondary} onClick={() => navigate('/learner-dashboard')}>
+                <button type="button" className="btn-secondary" onClick={() => navigate('/learner-dashboard')}>
                   <ArrowLeft className="h-4 w-4" /> Back
                 </button>
               </div>
             </div>
           </header>
 
-          {error && <div className="rounded-2xl border border-rose-400/20 bg-rose-500/10 px-5 py-4 text-sm text-rose-200">{error}</div>}
+          {/* Error */}
+          {error && (
+            <div className="alert alert-error">
+              <XCircle className="alert-icon h-4 w-4" />
+              {error}
+            </div>
+          )}
 
+          {/* ── Metric cards ── */}
           <section className="grid gap-4 sm:grid-cols-3">
-            {metrics.map(({ label, value, sub, Icon, color, bg }) => (
-              <article key={label} className={`${surface} p-5`}>
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-sm text-slate-400">{label}</p>
-                    <p className="mt-2 text-4xl font-semibold text-white">{value}</p>
-                    <p className="mt-2 text-xs text-slate-500">{sub}</p>
-                  </div>
-                  <div className={`rounded-2xl ${bg} p-3 ${color}`}><Icon className="h-5 w-5" /></div>
+            {metrics.map(({ label, value, sub, Icon, color, bg }, i) => (
+              <article
+                key={label}
+                className={`panel stat-card stagger-${i + 1} animate-rise`}
+              >
+                <div className="stat-card-body">
+                  <p className="stat-card-label">{label}</p>
+                  <p className="stat-card-value stat-number">{value}</p>
+                  <p className="stat-card-sub">{sub}</p>
+                </div>
+                <div className={`stat-card-icon ${bg} ${color} border`} style={{ borderColor: 'var(--surface-border)' }}>
+                  <Icon className="h-5 w-5" />
                 </div>
               </article>
             ))}
           </section>
 
-          <section className={`${surface} p-6`}>
+          {/* ── Attempt log ── */}
+          <section className="panel p-6">
             <div className="flex items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Attempt log</p>
-                <h2 className="mt-2 text-2xl font-semibold text-white">Your submissions</h2>
+                <p className="label-micro">Attempt log</p>
+                <h2 className="mt-2 heading-lg">Your submissions</h2>
               </div>
-              <div className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-slate-300">
-                <Clock3 className="h-4 w-4" /> Newest first
-              </div>
+              <span className="badge badge-neutral inline-flex items-center gap-2">
+                <Clock3 className="h-3.5 w-3.5" /> Newest first
+              </span>
             </div>
 
             <div className="mt-6">
               {loading ? (
-                <div className="space-y-3">{[1, 2].map(i => <div key={i} className="h-24 animate-pulse rounded-2xl bg-slate-900/70" />)}</div>
+                <div className="space-y-3">
+                  {[1, 2].map(i => <div key={i} className="skeleton h-24" />)}
+                </div>
               ) : results.length === 0 ? (
-                <div className="flex min-h-[180px] flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-white/[0.02] p-8 text-center">
-                  <h3 className="text-lg font-semibold text-white">No attempts yet</h3>
-                  <p className="mt-2 text-sm text-slate-400">Take this assessment to generate your first result.</p>
+                <div className="empty-state">
+                  <div className="empty-state-icon">
+                    <History className="h-6 w-6" />
+                  </div>
+                  <p className="empty-state-title">No attempts yet</p>
+                  <p className="empty-state-body">Take this assessment to generate your first result.</p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -144,34 +170,59 @@ export default function LearnerAssessmentHistory() {
                     const isExpanded = expanded === result.result_id
                     const resultAnswers = answersByResult[result.result_id] || []
                     return (
-                      <article key={result.result_id} className="rounded-2xl border border-white/10 bg-white/[0.03] transition hover:border-white/15">
-                        <button type="button" className="flex w-full items-center justify-between gap-4 p-4 text-left" onClick={() => setExpanded(isExpanded ? null : result.result_id)}>
+                      <article key={result.result_id} className="panel-interactive overflow-hidden">
+                        <button
+                          type="button"
+                          className="flex w-full items-center justify-between gap-4 p-4 text-left"
+                          onClick={() => setExpanded(isExpanded ? null : result.result_id)}
+                        >
                           <div className="flex items-center gap-4">
-                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/5 text-xl font-semibold text-white">
+                            {/* Score badge */}
+                            <div
+                              className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl text-lg font-bold font-numeric"
+                              style={{
+                                background: result.status === 'pass' ? 'var(--success-soft)' : 'var(--danger-soft)',
+                                color: result.status === 'pass' ? 'var(--success-text)' : 'var(--danger-text)',
+                                border: `1px solid ${result.status === 'pass' ? 'var(--success-border)' : 'var(--danger-border)'}`,
+                              }}
+                            >
                               {result.score}%
                             </div>
                             <div>
-                              <div className="flex items-center gap-2">
-                                {result.status === 'pass' ? (
-                                  <span className="inline-flex items-center gap-1 rounded-lg border border-emerald-300/20 bg-emerald-500/10 px-2 py-0.5 text-xs text-emerald-200"><CheckCircle2 className="h-3 w-3" /> PASS</span>
-                                ) : (
-                                  <span className="inline-flex items-center gap-1 rounded-lg border border-rose-300/20 bg-rose-500/10 px-2 py-0.5 text-xs text-rose-200"><XCircle className="h-3 w-3" /> FAIL</span>
-                                )}
-                              </div>
-                              <p className="mt-1 text-xs text-slate-500">{new Date(result.created_at).toLocaleString()}</p>
+                              <span className={`badge ${result.status === 'pass' ? 'badge-pass' : 'badge-fail'}`}>
+                                {result.status === 'pass'
+                                  ? <><CheckCircle2 className="h-3 w-3" /> Pass</>
+                                  : <><XCircle className="h-3 w-3" /> Fail</>}
+                              </span>
+                              <p className="mt-1.5 text-xs" style={{ color: 'var(--text-muted)' }}>
+                                {new Date(result.created_at).toLocaleString()}
+                              </p>
                             </div>
                           </div>
-                          <span className="text-xs text-slate-500">{isExpanded ? 'Hide' : 'Show'} details</span>
+                          <span className="text-xs font-medium" style={{ color: 'var(--primary)' }}>
+                            {isExpanded ? 'Hide' : 'Show'} details
+                          </span>
                         </button>
+
                         {isExpanded && resultAnswers.length > 0 && (
-                          <div className="border-t border-white/5 px-4 pb-4 pt-3">
+                          <div className="px-4 pb-4 pt-0">
+                            <hr className="divider mb-4" />
                             <div className="space-y-2">
                               {resultAnswers.map(answer => (
-                                <div key={`${result.result_id}-${answer.question_id}`} className="flex items-start gap-3 rounded-xl border border-white/5 bg-white/[0.02] px-3 py-2.5 text-sm">
-                                  {answer.is_correct ? <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" /> : <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-rose-400" />}
+                                <div
+                                  key={`${result.result_id}-${answer.question_id}`}
+                                  className="panel-inset flex items-start gap-3 px-3 py-2.5 text-sm"
+                                >
+                                  {answer.is_correct
+                                    ? <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" style={{ color: 'var(--success)' }} />
+                                    : <XCircle className="mt-0.5 h-4 w-4 shrink-0" style={{ color: 'var(--danger)' }} />}
                                   <div className="min-w-0">
-                                    <p className="font-medium text-slate-200">{questions[answer.question_id] || 'Question'}</p>
-                                    <p className="mt-1 text-xs text-slate-400">Answer: {answer.selected_answer || 'No answer'}</p>
+                                    <p className="font-medium" style={{ color: 'var(--text-main)' }}>
+                                      {questions[answer.question_id] || 'Question'}
+                                    </p>
+                                    <p className="mt-1 text-xs" style={{ color: 'var(--text-secondary)' }}>
+                                      Answer: {answer.selected_answer || 'No answer'}
+                                    </p>
                                   </div>
                                 </div>
                               ))}
@@ -185,6 +236,7 @@ export default function LearnerAssessmentHistory() {
               )}
             </div>
           </section>
+
         </div>
       </div>
     </div>

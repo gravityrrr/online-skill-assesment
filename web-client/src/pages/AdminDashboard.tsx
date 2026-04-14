@@ -3,10 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { Ban, CheckCircle2, Clock, LogOut, RefreshCcw, ShieldAlert, ShieldCheck, UserCheck, XCircle } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
-const surface = 'rounded-3xl border border-white/10 bg-slate-900/75 shadow-[0_20px_60px_rgba(2,6,23,0.45)] backdrop-blur-xl'
-const btnPrimary = 'inline-flex items-center justify-center gap-2 rounded-2xl bg-indigo-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-400 disabled:opacity-60 disabled:cursor-not-allowed'
-const btnSecondary = 'inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-slate-200 transition hover:border-white/20 hover:bg-white/10 disabled:opacity-60 disabled:cursor-not-allowed'
-
 interface PendingInstructor {
   id: string
   name: string
@@ -23,6 +19,7 @@ export default function AdminDashboard() {
   const [pendingUsers, setPendingUsers] = useState<PendingInstructor[]>([])
   const [loading, setLoading] = useState(true)
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null)
+  const [actionError, setActionError] = useState('')
   const [stats, setStats] = useState({ pending: 0, approved: 0, rejected: 0 })
 
   useEffect(() => { void fetchDashboardData() }, [])
@@ -42,16 +39,18 @@ export default function AdminDashboard() {
 
   const handleApprove = async (userId: string) => {
     setActionLoadingId(userId)
+    setActionError('')
     const { error } = await supabase.rpc('approve_instructor', { target_user_id: userId })
-    if (error) alert(`Approval failed: ${error.message}`)
+    if (error) setActionError(`Approval failed: ${error.message}`)
     else await fetchDashboardData()
     setActionLoadingId(null)
   }
 
   const handleReject = async (userId: string) => {
     setActionLoadingId(userId)
+    setActionError('')
     const { error } = await supabase.rpc('reject_instructor', { target_user_id: userId })
-    if (error) alert(`Reject failed: ${error.message}`)
+    if (error) setActionError(`Reject failed: ${error.message}`)
     else await fetchDashboardData()
     setActionLoadingId(null)
   }
@@ -62,106 +61,143 @@ export default function AdminDashboard() {
   }
 
   const metricCards = [
-    { label: 'Pending', value: stats.pending, sub: 'Awaiting admin action', Icon: Clock, color: 'text-amber-300', bg: 'bg-amber-500/10' },
-    { label: 'Approved', value: stats.approved, sub: 'Currently active', Icon: UserCheck, color: 'text-emerald-300', bg: 'bg-emerald-500/10' },
-    { label: 'Rejected', value: stats.rejected, sub: 'Declined applications', Icon: XCircle, color: 'text-rose-300', bg: 'bg-rose-500/10' },
+    { label: 'Pending', value: stats.pending, sub: 'Awaiting admin action', Icon: Clock, color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/20' },
+    { label: 'Approved', value: stats.approved, sub: 'Currently active', Icon: UserCheck, color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
+    { label: 'Rejected', value: stats.rejected, sub: 'Declined applications', Icon: XCircle, color: 'text-rose-400', bg: 'bg-rose-500/10', border: 'border-rose-500/20' },
   ]
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute left-[-120px] top-[-120px] h-80 w-80 rounded-full bg-indigo-500/12 blur-3xl" />
-        <div className="absolute right-[-100px] bottom-[-80px] h-72 w-72 rounded-full bg-rose-500/10 blur-3xl" />
+    <div className="app-page">
+      {/* Background orbs */}
+      <div className="bg-orbs">
+        <div className="bg-orb bg-orb-primary bg-orb-tl" />
+        <div className="bg-orb bg-orb-secondary bg-orb-br" />
       </div>
 
       <div className="relative mx-auto w-full max-w-[1100px] px-4 py-8 sm:px-6 lg:px-8">
         <div className="grid gap-6">
-          {/* Header */}
-          <header className={`${surface} px-5 py-5 sm:px-6`}>
+
+          {/* ── Header ── */}
+          <header className="panel-raised px-5 py-5 sm:px-6 animate-rise">
             <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-rose-500/15 text-rose-300">
+                <div
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl"
+                  style={{ background: 'var(--danger-soft)', color: 'var(--danger)', border: '1px solid var(--danger-border)' }}
+                >
                   <ShieldCheck className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Administration</p>
-                  <h1 className="mt-2 text-2xl font-semibold tracking-tight text-white sm:text-3xl">Instructor approvals</h1>
-                  <p className="mt-2 max-w-xl text-sm leading-6 text-slate-400">Approve or reject onboarding requests with explicit state tracking.</p>
+                  <p className="label-micro">Administration</p>
+                  <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl" style={{ color: 'var(--text-main)', letterSpacing: '-0.025em' }}>
+                    Instructor approvals
+                  </h1>
+                  <p className="mt-2 max-w-xl text-sm leading-6" style={{ color: 'var(--text-secondary)' }}>
+                    Approve or reject onboarding requests with explicit state tracking.
+                  </p>
                 </div>
               </div>
               <div className="flex flex-wrap items-center gap-3">
-                <button type="button" className={btnSecondary} onClick={() => void fetchDashboardData()}>
+                <button type="button" className="btn-secondary" onClick={() => void fetchDashboardData()}>
                   <RefreshCcw className="h-4 w-4" /> Refresh
                 </button>
-                <button type="button" onClick={handleLogout} className="inline-flex items-center justify-center gap-2 rounded-2xl border border-rose-400/20 bg-rose-500/10 px-4 py-2.5 text-sm font-medium text-rose-100 transition hover:bg-rose-500/20">
+                <button type="button" onClick={handleLogout} className="btn-danger">
                   <LogOut className="h-4 w-4" /> Sign out
                 </button>
               </div>
             </div>
           </header>
 
-          {/* Metrics */}
+          {/* ── Metric cards ── */}
           <section className="grid gap-4 sm:grid-cols-3">
-            {metricCards.map(({ label, value, sub, Icon, color, bg }) => (
-              <article key={label} className={`${surface} p-5`}>
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-sm text-slate-400">{label} instructors</p>
-                    <p className="mt-2 text-4xl font-semibold text-white">{value}</p>
-                    <p className="mt-2 text-xs text-slate-500">{sub}</p>
-                  </div>
-                  <div className={`rounded-2xl ${bg} p-3 ${color}`}>
-                    <Icon className="h-5 w-5" />
-                  </div>
+            {metricCards.map(({ label, value, sub, Icon, color, bg, border }, i) => (
+              <article
+                key={label}
+                className={`panel stat-card stagger-${i + 1} animate-rise`}
+              >
+                <div className="stat-card-body">
+                  <p className="stat-card-label">{label} instructors</p>
+                  <p className="stat-card-value stat-number">{value}</p>
+                  <p className="stat-card-sub">{sub}</p>
+                </div>
+                <div className={`stat-card-icon ${bg} ${border} ${color} border`}>
+                  <Icon className="h-5 w-5" />
                 </div>
               </article>
             ))}
           </section>
 
-          {/* Pending list */}
-          <section className={`${surface} p-6`}>
+          {/* ── Pending list ── */}
+          <section className="panel p-6">
             <div className="flex items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Pending queue</p>
-                <h2 className="mt-2 text-2xl font-semibold text-white">Instructor requests</h2>
+                <p className="label-micro">Pending queue</p>
+                <h2 className="mt-2 heading-lg">Instructor requests</h2>
               </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-slate-300">
+              <span className="badge badge-neutral">
                 {loading ? 'Loading...' : `${pendingUsers.length} pending`}
-              </div>
+              </span>
             </div>
+
+            {/* Action error */}
+            {actionError && (
+              <div className="alert alert-error mt-4">
+                <XCircle className="alert-icon h-4 w-4" />
+                {actionError}
+              </div>
+            )}
 
             <div className="mt-6">
               {loading ? (
                 <div className="space-y-3">
-                  {[1, 2, 3].map(i => <div key={i} className="h-20 animate-pulse rounded-2xl bg-slate-900/70" />)}
+                  {[1, 2, 3].map(i => <div key={i} className="skeleton h-20" />)}
                 </div>
               ) : pendingUsers.length === 0 ? (
-                <div className="flex min-h-[200px] flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-white/[0.02] p-8 text-center">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-300">
+                <div className="empty-state">
+                  <div className="empty-state-icon" style={{ background: 'var(--success-soft)', borderColor: 'var(--success-border)', color: 'var(--success)' }}>
                     <CheckCircle2 className="h-6 w-6" />
                   </div>
-                  <h3 className="mt-4 text-lg font-semibold text-white">All clear</h3>
-                  <p className="mt-2 text-sm text-slate-400">No instructor approval requests pending right now.</p>
+                  <p className="empty-state-title">All clear</p>
+                  <p className="empty-state-body">No instructor approval requests pending right now.</p>
                 </div>
               ) : (
                 <div className="space-y-3">
                   {pendingUsers.map((user) => (
-                    <article key={user.id} className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:flex-row sm:items-center sm:justify-between">
+                    <article
+                      key={user.id}
+                      className="panel approval-item flex-col sm:flex-row sm:items-center sm:justify-between"
+                    >
                       <div className="flex items-center gap-4">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/15 text-sm font-semibold text-indigo-200">
+                        <div
+                          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-sm font-bold"
+                          style={{ background: 'var(--primary-soft)', color: 'var(--primary)', border: '1px solid var(--primary-border)' }}
+                        >
                           {initials(user.name || '')}
                         </div>
                         <div>
-                          <h3 className="text-sm font-semibold text-white">{user.name || 'Unnamed user'}</h3>
-                          <p className="mt-1 text-xs text-slate-400">{user.email}</p>
+                          <h3 className="heading-md">{user.name || 'Unnamed user'}</h3>
+                          <p className="mt-1 text-xs" style={{ color: 'var(--text-secondary)' }}>{user.email}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <button type="button" className="inline-flex items-center gap-2 rounded-xl border border-rose-400/20 bg-rose-500/10 px-3 py-2 text-xs font-medium text-rose-200 transition hover:bg-rose-500/20" onClick={() => void handleReject(user.id)} disabled={actionLoadingId === user.id}>
+                        <button
+                          type="button"
+                          className="btn-danger"
+                          style={{ fontSize: '0.8rem', padding: '8px 14px' }}
+                          onClick={() => void handleReject(user.id)}
+                          disabled={actionLoadingId === user.id}
+                        >
                           <Ban className="h-3.5 w-3.5" /> Reject
                         </button>
-                        <button type="button" className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-3 py-2 text-xs font-semibold text-white transition hover:bg-emerald-400" onClick={() => void handleApprove(user.id)} disabled={actionLoadingId === user.id}>
-                          <ShieldAlert className="h-3.5 w-3.5" /> {actionLoadingId === user.id ? 'Updating...' : 'Approve'}
+                        <button
+                          type="button"
+                          className="btn-success"
+                          style={{ fontSize: '0.8rem', padding: '8px 14px' }}
+                          onClick={() => void handleApprove(user.id)}
+                          disabled={actionLoadingId === user.id}
+                        >
+                          <ShieldAlert className="h-3.5 w-3.5" />
+                          {actionLoadingId === user.id ? 'Updating...' : 'Approve'}
                         </button>
                       </div>
                     </article>

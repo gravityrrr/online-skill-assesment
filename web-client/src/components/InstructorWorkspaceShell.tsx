@@ -34,14 +34,9 @@ const navItems: NavItem[] = [
   },
 ]
 
-export const instructorSurfaceClass =
-  'rounded-3xl border border-white/10 bg-slate-900/75 shadow-[0_20px_60px_rgba(2,6,23,0.45)] backdrop-blur-xl'
-
-export const instructorSecondaryButtonClass =
-  'inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-slate-200 transition hover:border-white/20 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60'
-
-export const instructorPrimaryButtonClass =
-  'inline-flex items-center justify-center gap-2 rounded-2xl bg-indigo-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-60'
+export const instructorSurfaceClass = 'panel'
+export const instructorSecondaryButtonClass = 'btn-secondary'
+export const instructorPrimaryButtonClass = 'btn-primary'
 
 function initials(name: string) {
   return name
@@ -62,93 +57,138 @@ export default function InstructorWorkspaceShell({
   children,
 }: InstructorWorkspaceShellProps) {
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute left-[-120px] top-[-120px] h-72 w-72 rounded-full bg-indigo-500/12 blur-3xl" />
-        <div className="absolute right-[-100px] top-24 h-80 w-80 rounded-full bg-sky-500/10 blur-3xl" />
-        <div className="absolute bottom-[-120px] left-1/3 h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl" />
+    <div className="app-page">
+      {/* Decorative background orbs */}
+      <div className="bg-orbs">
+        <div className="bg-orb bg-orb-primary bg-orb-tl" />
+        <div className="bg-orb bg-orb-secondary bg-orb-tr" />
+        <div className="bg-orb bg-orb-tertiary bg-orb-bl" />
       </div>
 
       <div className="relative mx-auto w-full max-w-[1400px] px-4 py-6 sm:px-6 lg:px-8">
         <div className="grid items-start gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
-          <aside className={`${instructorSurfaceClass} p-4 sm:p-5 lg:sticky lg:top-6`}>
-            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-3 py-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-indigo-500/20 text-indigo-200">
+
+          {/* ── Sidebar ── */}
+          <aside className="panel-raised p-4 sm:p-5 lg:sticky lg:top-6">
+            {/* Brand header */}
+            <div className="panel-inset flex items-center gap-3 px-3 py-3">
+              <div
+                className="flex h-10 w-10 items-center justify-center rounded-2xl text-white"
+                style={{ background: 'linear-gradient(135deg, var(--primary), var(--primary-hover))' }}
+              >
                 <Sparkles className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">Instructor</p>
-                <p className="mt-1 text-sm font-medium text-slate-100">Workspace</p>
+                <p className="label-micro">Instructor</p>
+                <p className="mt-1 text-sm font-semibold" style={{ color: 'var(--text-main)' }}>Workspace</p>
               </div>
             </div>
 
+            {/* Navigation */}
             <nav className="mt-5 grid gap-2">
+              <p className="label-micro mb-1 px-1">Navigation</p>
               {navItems.map(({ label, detail, to, Icon }) => (
                 <NavLink
                   key={to}
                   to={to}
-                  className={({ isActive }) => {
-                    const activeClasses = isActive
-                      ? 'border-indigo-300/40 bg-indigo-500/15 text-indigo-100'
-                      : 'border-white/10 bg-white/[0.03] text-slate-300 hover:border-white/20 hover:bg-white/5 hover:text-white'
-                    return `group flex items-start gap-3 rounded-2xl border px-3 py-3 transition ${activeClasses}`
-                  }}
+                  className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
                 >
-                  <span className="mt-0.5 rounded-xl bg-white/10 p-2 text-slate-300 group-hover:text-white">
+                  <span className="nav-link-icon">
                     <Icon className="h-4 w-4" />
                   </span>
                   <span className="min-w-0">
                     <span className="block text-sm font-semibold">{label}</span>
-                    <span className="mt-1 block text-xs text-slate-400">{detail}</span>
+                    <span
+                      className="mt-0.5 block text-xs"
+                      style={{ color: 'var(--text-muted)' }}
+                    >
+                      {detail}
+                    </span>
                   </span>
                 </NavLink>
               ))}
             </nav>
 
-            <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-3">
-              <p className="text-xs uppercase tracking-[0.18em] text-slate-500">Logged in as</p>
-              <p className="mt-2 truncate text-sm font-medium text-slate-100">{instructorName}</p>
+            {/* Logged-in user */}
+            <div className="panel-inset mt-6 p-3">
+              <p className="label-micro">Logged in as</p>
+              <p
+                className="mt-2 truncate text-sm font-semibold"
+                style={{ color: 'var(--text-main)' }}
+              >
+                {instructorName}
+              </p>
             </div>
           </aside>
 
+          {/* ── Main content ── */}
           <main className="space-y-6">
-            <header className={`${instructorSurfaceClass} px-5 py-5 sm:px-6`}>
+            {/* Page header */}
+            <header className="panel-raised px-5 py-5 sm:px-6">
               <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
                 <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/15 text-indigo-300">
+                  <div
+                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl"
+                    style={{ background: 'var(--primary-soft)', color: 'var(--primary)', border: '1px solid var(--primary-border)' }}
+                  >
                     <Sparkles className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Instructor portal</p>
-                    <h1 className="mt-2 text-2xl font-semibold tracking-tight text-white sm:text-3xl">{title}</h1>
-                    <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">{subtitle}</p>
+                    <p className="label-micro">Instructor portal</p>
+                    <h1
+                      className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl"
+                      style={{ color: 'var(--text-main)', letterSpacing: '-0.025em' }}
+                    >
+                      {title}
+                    </h1>
+                    <p
+                      className="mt-2 max-w-3xl text-sm leading-6"
+                      style={{ color: 'var(--text-secondary)' }}
+                    >
+                      {subtitle}
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center xl:justify-end">
-                  <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-indigo-500 text-sm font-semibold text-white">
+                  {/* User identity badge */}
+                  <div className="panel-inset flex items-center gap-3 px-3 py-2.5 rounded-xl">
+                    <div
+                      className="flex h-9 w-9 items-center justify-center rounded-xl text-sm font-bold text-white"
+                      style={{ background: 'linear-gradient(135deg, var(--primary), var(--primary-hover))' }}
+                    >
                       {initials(instructorName)}
                     </div>
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-medium text-slate-100">{instructorName}</p>
-                      <p className="text-xs text-slate-400">Approved instructor</p>
+                      <p
+                        className="truncate text-sm font-semibold"
+                        style={{ color: 'var(--text-main)' }}
+                      >
+                        {instructorName}
+                      </p>
+                      <p className="label-micro">Approved instructor</p>
                     </div>
                   </div>
 
                   {headerAction}
 
                   {onRefresh ? (
-                    <button type="button" onClick={() => void onRefresh()} className={instructorSecondaryButtonClass}>
+                    <button
+                      type="button"
+                      onClick={() => void onRefresh()}
+                      className="btn-icon"
+                      title="Refresh"
+                      aria-label="Refresh"
+                    >
                       <RefreshCcw className="h-4 w-4" />
-                      Refresh
                     </button>
                   ) : null}
 
                   <button
                     type="button"
                     onClick={() => void onSignOut()}
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl border border-rose-400/20 bg-rose-500/10 px-4 py-2.5 text-sm font-medium text-rose-100 transition hover:bg-rose-500/20"
+                    className="btn-danger"
+                    style={{ fontSize: '0.8rem', padding: '9px 14px' }}
                   >
                     <LogOut className="h-4 w-4" />
                     Sign out

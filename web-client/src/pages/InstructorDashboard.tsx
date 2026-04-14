@@ -100,15 +100,15 @@ function shorten(value: string, max = 44) {
 }
 
 function StatSkeleton() {
-  return <div className={`${instructorSurfaceClass} h-36 animate-pulse bg-slate-900/70`} />
+  return <div className="skeleton h-36" />
 }
 
 function PanelSkeleton() {
-  return <div className={`${instructorSurfaceClass} h-80 animate-pulse bg-slate-900/70`} />
+  return <div className="skeleton h-80" />
 }
 
 function CourseSkeleton() {
-  return <div className={`${instructorSurfaceClass} h-80 animate-pulse bg-slate-900/70`} />
+  return <div className="skeleton h-80" />
 }
 
 function EmptyCourses({ onCreate }: { onCreate: () => void }) {

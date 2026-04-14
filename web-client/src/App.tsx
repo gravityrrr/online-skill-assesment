@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import ThemeToggle from './components/ThemeToggle'
+import { ThemeProvider } from './lib/theme'
 import { ensureProfile, type AppProfile } from './lib/profile'
 import { supabase } from './lib/supabase'
 import AdminDashboard from './pages/AdminDashboard'
@@ -12,8 +13,6 @@ import LearnerAssessmentHistory from './pages/LearnerAssessmentHistory'
 import Landing from './pages/Landing'
 import LearnerDashboard from './pages/LearnerDashboard'
 import TakeAssessment from './pages/TakeAssessment'
-
-type ThemeMode = 'light' | 'dark'
 
 function LoadingView() {
   return (
@@ -79,16 +78,6 @@ function App() {
   const [profile, setProfile] = useState<AppProfile | null>(null)
   const [loadingSession, setLoadingSession] = useState(true)
   const [loadingProfile, setLoadingProfile] = useState(true)
-  const [theme, setTheme] = useState<ThemeMode>(() => {
-    const saved = localStorage.getItem('ui-theme')
-    if (saved === 'light' || saved === 'dark') return saved
-    return 'dark'
-  })
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-    localStorage.setItem('ui-theme', theme)
-  }, [theme])
 
   useEffect(() => {
     let active = true
@@ -157,14 +146,12 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
-      <ThemeToggle
-        theme={theme}
-        onToggle={() => setTheme((current) => (current === 'light' ? 'dark' : 'light'))}
-      />
+    <ThemeProvider>
+      <BrowserRouter>
+        <ThemeToggle />
 
-      <Routes>
-        <Route path="/" element={!session ? <Landing /> : <Navigate to={defaultRoute} replace />} />
+        <Routes>
+          <Route path="/" element={!session ? <Landing /> : <Navigate to={defaultRoute} replace />} />
 
         <Route
           path="/profile-unavailable"
@@ -268,9 +255,10 @@ function App() {
           element={session && profile?.role === 'Admin' ? <AdminDashboard /> : <Navigate to={defaultRoute} replace />}
         />
 
-        <Route path="*" element={<Navigate to={defaultRoute} replace />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="*" element={<Navigate to={defaultRoute} replace />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   )
 }
 
