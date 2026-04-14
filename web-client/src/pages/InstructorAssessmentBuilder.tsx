@@ -105,7 +105,7 @@ export default function InstructorAssessmentBuilder() {
 
   useEffect(() => {
     void fetchBuilderData()
-  }, [searchParams])
+  }, [])
 
   const assessmentsForCourse = useMemo(() => {
     if (!selectedCourseId) return assessments
@@ -167,7 +167,11 @@ export default function InstructorAssessmentBuilder() {
     return rows
   }
 
-  const loadAssessmentIntoEditor = async (assessmentId: string, sourceAssessments?: AssessmentRow[]) => {
+  const loadAssessmentIntoEditor = async (
+    assessmentId: string,
+    sourceAssessments?: AssessmentRow[],
+    skipQuerySync = false,
+  ) => {
     const available = sourceAssessments ?? assessments
     const target = available.find((assessment) => assessment.assessment_id === assessmentId)
 
@@ -216,7 +220,9 @@ export default function InstructorAssessmentBuilder() {
     setPassPercentage(String(target.pass_percentage ?? 50))
     setQuestions(drafts)
     setLoadedQuestionIds(loadedRows.map((row) => row.question_id))
-    syncQuery({ courseId: target.course_id, assessmentId: target.assessment_id })
+    if (!skipQuerySync) {
+      syncQuery({ courseId: target.course_id, assessmentId: target.assessment_id })
+    }
 
     setEditorLoading(false)
   }
@@ -277,7 +283,7 @@ export default function InstructorAssessmentBuilder() {
       const loadedAssessments = await fetchAssessments(loadedCourses)
 
       if (requestedAssessmentId) {
-        await loadAssessmentIntoEditor(requestedAssessmentId, loadedAssessments)
+        await loadAssessmentIntoEditor(requestedAssessmentId, loadedAssessments, true)
       } else {
         resetEditor(availableCourseId)
       }

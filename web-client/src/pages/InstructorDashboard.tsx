@@ -99,25 +99,16 @@ function shorten(value: string, max = 44) {
   return `${value.slice(0, max - 1)}...`
 }
 
-function initials(name: string) {
-  return name
-    .split(' ')
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase() || '')
-    .join('') || 'IN'
-}
-
 function StatSkeleton() {
-  return <div className={`${surfaceClass} h-36 animate-pulse bg-slate-900/70`} />
+  return <div className={`${instructorSurfaceClass} h-36 animate-pulse bg-slate-900/70`} />
 }
 
 function PanelSkeleton() {
-  return <div className={`${surfaceClass} h-80 animate-pulse bg-slate-900/70`} />
+  return <div className={`${instructorSurfaceClass} h-80 animate-pulse bg-slate-900/70`} />
 }
 
 function CourseSkeleton() {
-  return <div className={`${surfaceClass} h-80 animate-pulse bg-slate-900/70`} />
+  return <div className={`${instructorSurfaceClass} h-80 animate-pulse bg-slate-900/70`} />
 }
 
 function EmptyCourses({ onCreate }: { onCreate: () => void }) {

@@ -6,6 +6,7 @@ import { supabase } from './lib/supabase'
 import AdminDashboard from './pages/AdminDashboard'
 import DynamicAuth from './pages/auth/DynamicAuth'
 import InstructorAssessmentReviews from './pages/InstructorAssessmentReviews'
+import InstructorAssessmentBuilder from './pages/InstructorAssessmentBuilder'
 import InstructorDashboard from './pages/InstructorDashboard'
 import LearnerAssessmentHistory from './pages/LearnerAssessmentHistory'
 import Landing from './pages/Landing'
@@ -237,6 +238,14 @@ function App() {
           path="/instructor-dashboard"
           element={
             session && profile?.role === 'Instructor' && profile?.is_approved ? <InstructorDashboard /> : (
+              <Navigate to={defaultRoute} replace />
+            )
+          }
+        />
+        <Route
+          path="/instructor/assessment-builder"
+          element={
+            session && profile?.role === 'Instructor' && profile?.is_approved ? <InstructorAssessmentBuilder /> : (
               <Navigate to={defaultRoute} replace />
             )
           }
