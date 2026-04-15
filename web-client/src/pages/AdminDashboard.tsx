@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Ban, CheckCircle2, Clock, LogOut, RefreshCcw, ShieldAlert, ShieldCheck, UserCheck, XCircle } from 'lucide-react'
 import { supabase } from '../lib/supabase'
+import AppShell from '../components/AppShell'
+import PageHeader from '../components/PageHeader'
+import SectionCard from '../components/SectionCard'
+import StatCard from '../components/StatCard'
 
 interface PendingInstructor {
   id: string
@@ -67,68 +71,41 @@ export default function AdminDashboard() {
   ]
 
   return (
-    <div className="app-page">
-      {/* Background orbs */}
-      <div className="bg-orbs">
-        <div className="bg-orb bg-orb-primary bg-orb-tl" />
-        <div className="bg-orb bg-orb-secondary bg-orb-br" />
-      </div>
+    <AppShell maxWidthClassName="max-w-[1100px]">
+      <div className="grid gap-6">
+        <PageHeader
+          eyebrow="Administration"
+          title="Instructor approvals"
+          subtitle="Approve or reject onboarding requests with explicit state tracking."
+          tone="danger"
+          icon={<ShieldCheck className="h-5 w-5" />}
+          actions={
+            <>
+              <button type="button" className="btn-secondary" onClick={() => void fetchDashboardData()}>
+                <RefreshCcw className="h-4 w-4" /> Refresh
+              </button>
+              <button type="button" onClick={handleLogout} className="btn-danger">
+                <LogOut className="h-4 w-4" /> Sign out
+              </button>
+            </>
+          }
+        />
 
-      <div className="relative mx-auto w-full max-w-[1100px] px-4 py-8 sm:px-6 lg:px-8">
-        <div className="grid gap-6">
+        <section className="grid gap-4 sm:grid-cols-3">
+          {metricCards.map(({ label, value, sub, Icon, color, bg, border }) => (
+            <StatCard
+              key={label}
+              label={`${label} instructors`}
+              value={value}
+              sub={sub}
+              icon={<Icon className="h-5 w-5" />}
+              iconWrapperClassName={`${bg} ${border}`}
+              iconClassName={color}
+            />
+          ))}
+        </section>
 
-          {/* ── Header ── */}
-          <header className="panel-raised px-5 py-5 sm:px-6 animate-rise">
-            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-              <div className="flex items-start gap-4">
-                <div
-                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl"
-                  style={{ background: 'var(--danger-soft)', color: 'var(--danger)', border: '1px solid var(--danger-border)' }}
-                >
-                  <ShieldCheck className="h-5 w-5" />
-                </div>
-                <div>
-                  <p className="label-micro">Administration</p>
-                  <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl" style={{ color: 'var(--text-main)', letterSpacing: '-0.025em' }}>
-                    Instructor approvals
-                  </h1>
-                  <p className="mt-2 max-w-xl text-sm leading-6" style={{ color: 'var(--text-secondary)' }}>
-                    Approve or reject onboarding requests with explicit state tracking.
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-wrap items-center gap-3">
-                <button type="button" className="btn-secondary" onClick={() => void fetchDashboardData()}>
-                  <RefreshCcw className="h-4 w-4" /> Refresh
-                </button>
-                <button type="button" onClick={handleLogout} className="btn-danger">
-                  <LogOut className="h-4 w-4" /> Sign out
-                </button>
-              </div>
-            </div>
-          </header>
-
-          {/* ── Metric cards ── */}
-          <section className="grid gap-4 sm:grid-cols-3">
-            {metricCards.map(({ label, value, sub, Icon, color, bg, border }, i) => (
-              <article
-                key={label}
-                className={`panel stat-card stagger-${i + 1} animate-rise`}
-              >
-                <div className="stat-card-body">
-                  <p className="stat-card-label">{label} instructors</p>
-                  <p className="stat-card-value stat-number">{value}</p>
-                  <p className="stat-card-sub">{sub}</p>
-                </div>
-                <div className={`stat-card-icon ${bg} ${border} ${color} border`}>
-                  <Icon className="h-5 w-5" />
-                </div>
-              </article>
-            ))}
-          </section>
-
-          {/* ── Pending list ── */}
-          <section className="panel p-6">
+        <SectionCard>
             <div className="flex items-end justify-between gap-4">
               <div>
                 <p className="label-micro">Pending queue</p>
@@ -147,9 +124,9 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            <div className="mt-6">
+            <div className="mt-7">
               {loading ? (
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {[1, 2, 3].map(i => <div key={i} className="skeleton h-20" />)}
                 </div>
               ) : pendingUsers.length === 0 ? (
@@ -161,7 +138,7 @@ export default function AdminDashboard() {
                   <p className="empty-state-body">No instructor approval requests pending right now.</p>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {pendingUsers.map((user) => (
                     <article
                       key={user.id}
@@ -205,9 +182,8 @@ export default function AdminDashboard() {
                 </div>
               )}
             </div>
-          </section>
-        </div>
+        </SectionCard>
       </div>
-    </div>
+    </AppShell>
   )
 }

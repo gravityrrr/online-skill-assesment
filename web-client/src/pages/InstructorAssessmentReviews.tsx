@@ -94,7 +94,7 @@ export default function InstructorAssessmentReviews() {
         <div className="grid gap-6">
 
           {/* ── Header ── */}
-          <header className="panel-raised px-5 py-5 sm:px-6 animate-rise">
+          <header className="panel-raised px-6 py-6 sm:px-7 animate-rise">
             <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
               <div className="flex items-start gap-4">
                 <div
@@ -155,11 +155,11 @@ export default function InstructorAssessmentReviews() {
           </section>
 
           {/* ── Results list ── */}
-          <section className="panel p-6">
+          <section className="panel p-7 sm:p-8">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="label-micro">Submissions</p>
-                <h2 className="mt-2 heading-lg">Learner results</h2>
+                <h2 className="mt-3 heading-lg">Learner results</h2>
               </div>
               <div className="input-with-icon w-full max-w-md sm:w-[320px]">
                 <Search className="input-icon-left h-4 w-4" />

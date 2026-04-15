@@ -7,6 +7,7 @@ import {
   ClipboardList,
   Clock3,
   Plus,
+  Sparkles,
   TriangleAlert,
   Trophy,
   Users,
@@ -426,81 +427,67 @@ export default function InstructorDashboard() {
       onSignOut={handleSignOut}
       onRefresh={fetchDashboard}
       headerAction={
-        <button type="button" onClick={() => openBuilder()} className={instructorPrimaryButtonClass}>
+        <button type="button" onClick={() => openBuilder()} className="neon-btn">
           <Plus className="h-4 w-4" />
           New assessment
         </button>
       }
     >
-      <div className="grid gap-6" ref={menuRootRef}>
-        <section className="grid gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(320px,0.9fr)]">
-          <div className={`${instructorSurfaceClass} px-5 py-6 sm:px-6`}>
-            <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
-              <div className="max-w-2xl">
-                <p className="text-sm font-medium text-indigo-300">Welcome back, {instructorName}</p>
-                <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
-                  Build better assessments with clearer insight.
-                </h2>
-                <p className="mt-4 text-sm leading-7 text-slate-400">
-                  The new premium layout keeps spacing, typography, and action hierarchy aligned across every dashboard section.
-                </p>
-              </div>
+      <div className="flex flex-col gap-10 pb-16" ref={menuRootRef}>
+        
+        {/* Welcome Section - Stunning Hero Banner */}
+        <section className="group relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-gradient-to-br from-indigo-900/40 via-slate-900/80 to-[#101218]/90 p-10 sm:p-14 hover-glow hover-lift animate-slide-up shadow-2xl">
+          {/* Decorative glowing orb */}
+          <div className="absolute -right-20 -top-20 h-[400px] w-[400px] rounded-full bg-indigo-500/20 blur-[100px] transition-all duration-700 group-hover:bg-indigo-400/30" />
+          <div className="absolute -bottom-20 -left-20 h-[300px] w-[300px] rounded-full bg-sky-500/10 blur-[80px]" />
+          
+          <div className="relative z-10 flex flex-col gap-10 xl:flex-row xl:items-center xl:justify-between">
+            <div className="max-w-3xl">
+              <span className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-indigo-300 backdrop-blur-md">
+                <Sparkles className="h-3.5 w-3.5" />
+                Instructor Portal
+              </span>
+              <h2 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-100 to-indigo-300 sm:text-5xl">
+                Welcome back, {instructorName}.
+              </h2>
+              <p className="mt-5 text-base leading-relaxed text-slate-300 sm:text-lg">
+                Build better assessments with clearer insight. This new premium layout keeps spacing, typography, and action hierarchy perfectly aligned.
+              </p>
+            </div>
 
-              <div className="grid gap-3 sm:grid-cols-2 xl:w-[360px]">
-                <button
-                  type="button"
-                  onClick={() => openBuilder({ createCourse: true })}
-                  className={instructorPrimaryButtonClass}
-                >
-                  <Plus className="h-4 w-4" />
-                  Create course
-                </button>
-                <button type="button" onClick={() => openBuilder()} className={instructorSecondaryButtonClass}>
-                  <ClipboardList className="h-4 w-4" />
-                  Build assessment
-                </button>
-              </div>
+            <div className="flex flex-col gap-4 sm:flex-row shrink-0">
+              <button
+                type="button"
+                onClick={() => openBuilder({ createCourse: true })}
+                className="neon-btn flex-1 shadow-[0_0_40px_rgba(99,102,241,0.2)]"
+              >
+                <Plus className="h-4 w-4" />
+                Create course
+              </button>
+              <button type="button" onClick={() => openBuilder()} className="secondary-btn flex-1 backdrop-blur-md bg-white/5 border-white/10">
+                <ClipboardList className="h-4 w-4" />
+                Build assessment
+              </button>
             </div>
           </div>
-
-          <aside className={`${instructorSurfaceClass} px-5 py-6 sm:px-6`}>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Snapshot</p>
-            <h3 className="mt-2 text-xl font-semibold text-white">Today at a glance</h3>
-            <div className="mt-6 grid gap-4">
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                <p className="text-sm text-slate-400">Most active course</p>
-                <p className="mt-2 text-base font-semibold text-white">{topCourse?.title || 'No course activity yet'}</p>
-                <p className="mt-1 text-xs text-slate-500">
-                  {topCourse
-                    ? `${topCourse.submissionCount} submissions tracked`
-                    : 'Publish a course to start collecting data.'}
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                <p className="text-sm text-slate-400">Average learner score</p>
-                <p className="mt-2 text-2xl font-semibold text-emerald-300">{formatPercent(stats.averageLearnerScore)}</p>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                <p className="text-sm text-slate-400">Average assessment time</p>
-                <p className="mt-2 text-2xl font-semibold text-sky-300">{formatMinutes(averageTimeAcrossCourses)}</p>
-              </div>
-            </div>
-          </aside>
         </section>
 
         {error ? (
-          <section className="rounded-3xl border border-rose-400/20 bg-rose-500/10 px-5 py-4 text-sm text-rose-100">
-            {error}
+          <section className="flex items-center gap-3 rounded-2xl border border-rose-500/30 bg-rose-500/10 px-6 py-4 text-sm text-rose-200 backdrop-blur-md">
+            <TriangleAlert className="h-5 w-5 shrink-0 text-rose-400" />
+            <p>{error}</p>
           </section>
         ) : null}
+        
         {notice ? (
-          <section className="flex items-start gap-3 rounded-3xl border border-amber-300/20 bg-amber-500/10 px-5 py-4 text-sm text-amber-50">
-            <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
-            <span>{notice}</span>
+          <section className="flex items-center gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-6 py-4 text-sm text-amber-200 backdrop-blur-md">
+            <TriangleAlert className="h-5 w-5 shrink-0 text-amber-400" />
+            <p>{notice}</p>
           </section>
         ) : null}
 
-        <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {/* Stats Grid */}
+        <section className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {loading ? (
             <>
               <StatSkeleton />
@@ -510,51 +497,58 @@ export default function InstructorDashboard() {
             </>
           ) : (
             <>
-              <article className={`${instructorSurfaceClass} p-5`}>
-                <div className="flex items-start justify-between gap-4">
+              <article className="group relative overflow-hidden rounded-[2rem] border border-white/5 bg-[#101218]/80 p-8 flex flex-col justify-between backdrop-blur-xl hover-lift shadow-lg">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <div className="relative z-10 flex items-start justify-between gap-6">
                   <div>
-                    <p className="text-sm text-slate-400">Courses</p>
-                    <p className="mt-3 text-4xl font-semibold text-white">{stats.totalCourses}</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Courses</p>
+                    <p className="mt-3 text-4xl font-extrabold text-white">{stats.totalCourses}</p>
                     <p className="mt-2 text-sm text-slate-500">Managed by you</p>
                   </div>
-                  <div className="rounded-2xl bg-sky-500/10 p-3 text-sky-300">
-                    <BookOpen className="h-5 w-5" />
+                  <div className="rounded-2xl border border-blue-500/20 bg-blue-500/10 p-4 text-blue-400 transition-transform duration-300 group-hover:scale-110">
+                    <BookOpen className="h-6 w-6" />
                   </div>
                 </div>
               </article>
-              <article className={`${instructorSurfaceClass} p-5`}>
-                <div className="flex items-start justify-between gap-4">
+              
+              <article className="group relative overflow-hidden rounded-[2rem] border border-white/5 bg-[#101218]/80 p-8 flex flex-col justify-between backdrop-blur-xl hover-lift shadow-lg">
+                <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <div className="relative z-10 flex items-start justify-between gap-6">
                   <div>
-                    <p className="text-sm text-slate-400">Assessments</p>
-                    <p className="mt-3 text-4xl font-semibold text-white">{stats.publishedAssessments}</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Assessments</p>
+                    <p className="mt-3 text-4xl font-extrabold text-white">{stats.publishedAssessments}</p>
                     <p className="mt-2 text-sm text-slate-500">Published live</p>
                   </div>
-                  <div className="rounded-2xl bg-violet-500/10 p-3 text-violet-300">
-                    <BarChart3 className="h-5 w-5" />
+                  <div className="rounded-2xl border border-violet-500/20 bg-violet-500/10 p-4 text-violet-400 transition-transform duration-300 group-hover:scale-110">
+                    <BarChart3 className="h-6 w-6" />
                   </div>
                 </div>
               </article>
-              <article className={`${instructorSurfaceClass} p-5`}>
-                <div className="flex items-start justify-between gap-4">
+              
+              <article className="group relative overflow-hidden rounded-[2rem] border border-white/5 bg-[#101218]/80 p-8 flex flex-col justify-between backdrop-blur-xl hover-lift shadow-lg">
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <div className="relative z-10 flex items-start justify-between gap-6">
                   <div>
-                    <p className="text-sm text-slate-400">Completion rate</p>
-                    <p className="mt-3 text-4xl font-semibold text-white">{formatPercent(stats.completionRate)}</p>
-                    <p className="mt-2 text-sm text-slate-500">Assessments with attempts</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Completion</p>
+                    <p className="mt-3 text-4xl font-extrabold text-white">{formatPercent(stats.completionRate)}</p>
+                    <p className="mt-2 text-sm text-slate-500">Assessments engaged</p>
                   </div>
-                  <div className="rounded-2xl bg-amber-500/10 p-3 text-amber-300">
-                    <Trophy className="h-5 w-5" />
+                  <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 p-4 text-amber-400 transition-transform duration-300 group-hover:scale-110">
+                    <Trophy className="h-6 w-6" />
                   </div>
                 </div>
               </article>
-              <article className={`${instructorSurfaceClass} p-5`}>
-                <div className="flex items-start justify-between gap-4">
+              
+              <article className="group relative overflow-hidden rounded-[2rem] border border-white/5 bg-[#101218]/80 p-8 flex flex-col justify-between backdrop-blur-xl hover-lift shadow-lg">
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <div className="relative z-10 flex items-start justify-between gap-6">
                   <div>
-                    <p className="text-sm text-slate-400">Active learners</p>
-                    <p className="mt-3 text-4xl font-semibold text-white">{stats.activeLearners}</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Learners</p>
+                    <p className="mt-3 text-4xl font-extrabold text-white">{stats.activeLearners}</p>
                     <p className="mt-2 text-sm text-slate-500">Unique submissions</p>
                   </div>
-                  <div className="rounded-2xl bg-emerald-500/10 p-3 text-emerald-300">
-                    <Users className="h-5 w-5" />
+                  <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-emerald-400 transition-transform duration-300 group-hover:scale-110">
+                    <Users className="h-6 w-6" />
                   </div>
                 </div>
               </article>
@@ -562,7 +556,8 @@ export default function InstructorDashboard() {
           )}
         </section>
 
-        <section className="grid gap-6 xl:grid-cols-2">
+        {/* Two-Column Analytics */}
+        <section className="grid gap-8 xl:grid-cols-2">
           {loading ? (
             <>
               <PanelSkeleton />
@@ -570,31 +565,36 @@ export default function InstructorDashboard() {
             </>
           ) : (
             <>
-              <article className={`${instructorSurfaceClass} p-6`}>
-                <div className="flex items-start justify-between gap-4">
+              {/* Course Averages */}
+              <article className="rounded-[2.5rem] border border-white/5 bg-[#101218]/80 p-10 backdrop-blur-xl shadow-2xl hover-lift">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Analytics</p>
-                    <h2 className="mt-2 text-2xl font-semibold text-white">Course averages</h2>
-                    <p className="mt-2 text-sm text-slate-400">Bar-style overview of strongest and weakest course performance.</p>
+                    <p className="bg-gradient-to-r from-sky-400 to-indigo-400 bg-clip-text text-xs font-extrabold uppercase tracking-[0.2em] text-transparent">
+                      Analytics Pulse
+                    </p>
+                    <h2 className="mt-3 text-2xl font-bold tracking-tight text-white">Course Averages</h2>
+                    <p className="mt-2 text-sm text-slate-400">Snapshot of your strongest and weakest course performance.</p>
                   </div>
-                  <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-slate-300">Top courses</div>
+                  <span className="inline-flex items-center rounded-full bg-white/5 px-3 py-1 text-xs font-medium text-slate-300">
+                    Top courses
+                  </span>
                 </div>
 
-                <div className="mt-8 space-y-4">
+                <div className="mt-10 flex flex-col gap-6">
                   {courseAverages.length === 0 ? (
-                    <div className="rounded-2xl border border-dashed border-white/10 bg-white/5 p-5 text-sm text-slate-400">
-                      Course averages appear after learners submit results.
+                    <div className="flex min-h-[160px] items-center justify-center rounded-2xl border border-dashed border-white/10 bg-white/5 p-6 text-center text-sm text-slate-400">
+                      Performance data will illuminate here after learners complete assessments.
                     </div>
                   ) : (
-                    courseAverages.map((course) => (
-                      <div key={course.courseId} className="space-y-2">
-                        <div className="flex items-center justify-between gap-4 text-sm">
-                          <span className="font-medium text-slate-200">{course.label}</span>
-                          <span className="text-slate-400">{formatPercent(course.average)}</span>
+                    courseAverages.map((course, idx) => (
+                      <div key={course.courseId} className="group relative">
+                        <div className="mb-3 flex items-center justify-between text-sm">
+                          <span className="font-semibold text-slate-200 transition-colors group-hover:text-white">{course.label}</span>
+                          <span className="font-bold text-sky-300">{formatPercent(course.average)}</span>
                         </div>
-                        <div className="h-3 rounded-full bg-white/5">
+                        <div className="relative h-2.5 w-full overflow-hidden rounded-full bg-white/5 border border-white/5">
                           <div
-                            className="h-3 rounded-full bg-gradient-to-r from-sky-400 to-indigo-500"
+                            className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-sky-400 to-indigo-500 transition-all duration-1000 ease-out"
                             style={{ width: `${clampPercent(course.average)}%` }}
                           />
                         </div>
@@ -604,35 +604,40 @@ export default function InstructorDashboard() {
                 </div>
               </article>
 
-              <article className={`${instructorSurfaceClass} p-6`}>
-                <div className="flex items-start justify-between gap-4">
+              {/* Hardest Questions */}
+              <article className="rounded-[2.5rem] border border-white/5 bg-[#101218]/80 p-10 backdrop-blur-xl shadow-2xl hover-lift">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Question accuracy</p>
-                    <h2 className="mt-2 text-2xl font-semibold text-white">Hardest questions</h2>
-                    <p className="mt-2 text-sm text-slate-400">Lowest-scoring questions help you spot content that needs revision.</p>
+                    <p className="bg-gradient-to-r from-rose-400 to-amber-400 bg-clip-text text-xs font-extrabold uppercase tracking-[0.2em] text-transparent">
+                      Content Review
+                    </p>
+                    <h2 className="mt-3 text-2xl font-bold tracking-tight text-white">Hardest Questions</h2>
+                    <p className="mt-2 text-sm text-slate-400">Spot knowledge gaps and revise low-scoring assessment items.</p>
                   </div>
-                  <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-slate-300">Accuracy</div>
+                  <span className="inline-flex items-center rounded-full bg-rose-500/10 px-3 py-1 text-xs font-medium text-rose-300">
+                    Accuracy
+                  </span>
                 </div>
 
-                <div className="mt-8 space-y-4">
+                <div className="mt-10 flex flex-col gap-4">
                   {!questionAccuracyAvailable ? (
-                    <div className="rounded-2xl border border-dashed border-amber-300/20 bg-amber-500/10 p-5 text-sm text-amber-50">
-                      Answer-level analytics are not available yet.
+                    <div className="flex min-h-[160px] items-center justify-center rounded-2xl border border-dashed border-amber-500/20 bg-amber-500/5 p-6 text-center text-sm text-amber-200/70">
+                      Answer-level analytics will be unlocked once reviews are active.
                     </div>
                   ) : hardestQuestions.length === 0 ? (
-                    <div className="rounded-2xl border border-dashed border-white/10 bg-white/5 p-5 text-sm text-slate-400">
-                      Hardest-question insights appear after assessment attempts are submitted.
+                    <div className="flex min-h-[160px] items-center justify-center rounded-2xl border border-dashed border-white/10 bg-white/5 p-6 text-center text-sm text-slate-400">
+                      Insights will emerge when assessment attempts are submitted.
                     </div>
                   ) : (
                     hardestQuestions.map((question) => (
-                      <div key={question.questionId} className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                        <div className="flex items-start justify-between gap-4">
-                          <p className="text-sm font-medium leading-6 text-slate-100">{question.label}</p>
-                          <span className="rounded-xl bg-rose-500/10 px-3 py-1 text-sm font-semibold text-rose-100">
-                            {formatPercent(question.accuracy)}
-                          </span>
+                      <div key={question.questionId} className="group flex items-center justify-between gap-4 rounded-2xl border border-white/5 bg-white/[0.02] p-5 transition-all hover:bg-white/[0.04]">
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-sm font-medium text-slate-200 group-hover:text-white">{question.label}</p>
+                          <p className="mt-1 text-xs text-slate-500">{question.attempts} reviewed answers</p>
                         </div>
-                        <p className="mt-3 text-xs text-slate-500">{question.attempts} reviewed answers</p>
+                        <span className="shrink-0 rounded-xl bg-rose-500/10 px-3 py-1.5 text-xs font-bold text-rose-400 ring-1 ring-rose-500/20">
+                          {formatPercent(question.accuracy)}
+                        </span>
                       </div>
                     ))
                   )}
@@ -642,21 +647,24 @@ export default function InstructorDashboard() {
           )}
         </section>
 
-        <section className={`${instructorSurfaceClass} p-6`}>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        {/* Course Portfolio */}
+        <section className="mt-4">
+          <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between px-2">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Course management</p>
-              <h2 className="mt-2 text-2xl font-semibold text-white">Course portfolio</h2>
-              <p className="mt-2 text-sm text-slate-400">Each course now links to a working builder flow for real assessment creation.</p>
+              <p className="bg-gradient-to-r from-emerald-400 to-sky-400 bg-clip-text text-xs font-extrabold uppercase tracking-[0.2em] text-transparent">
+                Course Management
+              </p>
+              <h2 className="mt-3 text-3xl font-bold tracking-tight text-white">Course Portfolio</h2>
+              <p className="mt-2 text-sm text-slate-400">Seamlessly move from high-level stats into the working assessment builder.</p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-300">
-              {loading ? 'Loading courses...' : `${courses.length} course${courses.length === 1 ? '' : 's'}`}
-            </div>
+            <p className="text-sm font-medium text-slate-400">
+              {loading ? 'Curating portfolio...' : `${courses.length} active course${courses.length === 1 ? '' : 's'}`}
+            </p>
           </div>
 
-          <div className="mt-8">
+          <div>
             {loading ? (
-              <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 <CourseSkeleton />
                 <CourseSkeleton />
                 <CourseSkeleton />
@@ -664,17 +672,17 @@ export default function InstructorDashboard() {
             ) : courses.length === 0 ? (
               <EmptyCourses onCreate={() => openBuilder({ createCourse: true })} />
             ) : (
-              <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {courses.map((course) => (
-                  <article key={course.course_id} className={`${instructorSurfaceClass} flex h-full flex-col p-5`}>
+                  <article key={course.course_id} className="group flex flex-col rounded-[2.5rem] border border-white/5 bg-[#101218]/60 p-8 backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:bg-[#101218]/90 hover:shadow-[0_20px_60px_rgba(0,0,0,0.5)] hover:border-white/10">
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0 flex-1">
-                        <span className="inline-flex rounded-full bg-indigo-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-200">
-                          Course
+                        <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-[10px] font-black uppercase tracking-[0.25em] text-transparent">
+                          Course Blueprint
                         </span>
-                        <h3 className="mt-4 text-lg font-semibold text-white">{course.title}</h3>
-                        <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-400">
-                          {course.description?.trim() || 'No course description yet. Add one so learners understand the context.'}
+                        <h3 className="mt-3 truncate text-xl font-bold text-white tracking-tight">{course.title}</h3>
+                        <p className="mt-2 line-clamp-2 text-sm text-slate-400 leading-relaxed">
+                          {course.description?.trim() || 'No description provided. Add details to guide your learners.'}
                         </p>
                       </div>
 
@@ -691,7 +699,7 @@ export default function InstructorDashboard() {
                             navigate(`/instructor/assessments/${course.featuredAssessmentId}/reviews`)
                             return
                           }
-                          setNotice('No assessment found for this course yet. Open the builder to create one.')
+                          setNotice('No assessment found for this course yet.')
                         }}
                         onBuilder={() => {
                           setOpenMenuCourseId(null)
@@ -700,46 +708,46 @@ export default function InstructorDashboard() {
                       />
                     </div>
 
-                    <div className="mt-6 grid grid-cols-2 gap-3">
-                      <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                        <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Assessments</p>
-                        <p className="mt-2 text-2xl font-semibold text-white">{course.assessmentCount}</p>
+                    <div className="mt-8 grid grid-cols-2 gap-px rounded-2xl bg-white/5 overflow-hidden">
+                      <div className="bg-[#101218] p-4 text-center transition-colors group-hover:bg-[#151821]">
+                        <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-500">Assessments</p>
+                        <p className="mt-1 text-2xl font-bold text-slate-200">{course.assessmentCount}</p>
                       </div>
-                      <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                        <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Avg score</p>
-                        <p className="mt-2 text-2xl font-semibold text-white">{formatPercent(course.averageScore)}</p>
+                      <div className="bg-[#101218] p-4 text-center transition-colors group-hover:bg-[#151821]">
+                        <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-500">Avg Score</p>
+                        <p className="mt-1 text-2xl font-bold text-sky-300">{formatPercent(course.averageScore)}</p>
                       </div>
-                      <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                        <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Coverage</p>
-                        <p className="mt-2 text-2xl font-semibold text-white">{formatPercent(course.completionRate)}</p>
+                      <div className="bg-[#101218] p-4 text-center transition-colors group-hover:bg-[#151821]">
+                        <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-500">Coverage</p>
+                        <p className="mt-1 text-2xl font-bold text-emerald-300">{formatPercent(course.completionRate)}</p>
                       </div>
-                      <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                        <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Time</p>
-                        <p className="mt-2 text-2xl font-semibold text-white">{formatMinutes(course.averageTimeLimit)}</p>
+                      <div className="bg-[#101218] p-4 text-center transition-colors group-hover:bg-[#151821]">
+                        <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-500">Avg Time</p>
+                        <p className="mt-1 text-2xl font-bold text-amber-300">{formatMinutes(course.averageTimeLimit)}</p>
                       </div>
                     </div>
 
-                    <div className="mt-6 flex flex-1 items-end">
-                      <div className="flex w-full items-center justify-between gap-4 border-t border-white/10 pt-4">
-                        <div className="min-w-0">
-                          <p className="text-sm font-medium text-slate-200">{course.submissionCount} submissions tracked</p>
-                          <p className="mt-1 text-xs text-slate-500">Latest activity in this course</p>
+                    <div className="mt-8 flex items-center justify-between border-t border-white/5 pt-6">
+                      <div className="flex items-center gap-2">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/5 text-slate-400 group-hover:bg-indigo-500/20 group-hover:text-indigo-300 transition-colors">
+                          <Users className="h-4 w-4" />
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (course.featuredAssessmentId) {
-                              navigate(`/instructor/assessments/${course.featuredAssessmentId}/reviews`)
-                              return
-                            }
-                            openBuilder({ courseId: course.course_id })
-                          }}
-                          className={instructorSecondaryButtonClass}
-                        >
-                          {course.featuredAssessmentId ? 'Open reviews' : 'Open builder'}
-                          <ChevronRight className="h-4 w-4" />
-                        </button>
+                        <p className="text-xs font-semibold text-slate-400 group-hover:text-slate-300">{course.submissionCount} subs</p>
                       </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (course.featuredAssessmentId) {
+                            navigate(`/instructor/assessments/${course.featuredAssessmentId}/reviews`)
+                            return
+                          }
+                          openBuilder({ courseId: course.course_id })
+                        }}
+                        className="group/btn flex items-center gap-2 rounded-xl bg-white/5 px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-white/10"
+                      >
+                        {course.featuredAssessmentId ? 'Reviews' : 'Builder'}
+                        <ChevronRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                      </button>
                     </div>
                   </article>
                 ))}
@@ -748,43 +756,6 @@ export default function InstructorDashboard() {
           </div>
         </section>
 
-        <section className="grid gap-4 lg:grid-cols-3">
-          <article className={`${instructorSurfaceClass} p-5`}>
-            <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-indigo-500/10 p-3 text-indigo-300">
-                <ClipboardList className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="text-sm text-slate-400">Assessment density</p>
-                <p className="mt-1 text-lg font-semibold text-white">
-                  {stats.totalCourses > 0 ? `${(stats.publishedAssessments / stats.totalCourses).toFixed(1)} per course` : '--'}
-                </p>
-              </div>
-            </div>
-          </article>
-          <article className={`${instructorSurfaceClass} p-5`}>
-            <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-sky-500/10 p-3 text-sky-300">
-                <Clock3 className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="text-sm text-slate-400">Typical time limit</p>
-                <p className="mt-1 text-lg font-semibold text-white">{formatMinutes(averageTimeAcrossCourses)}</p>
-              </div>
-            </div>
-          </article>
-          <article className={`${instructorSurfaceClass} p-5`}>
-            <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-emerald-500/10 p-3 text-emerald-300">
-                <Trophy className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="text-sm text-slate-400">Best-performing course</p>
-                <p className="mt-1 text-lg font-semibold text-white">{courseAverages[0]?.label || 'Awaiting data'}</p>
-              </div>
-            </div>
-          </article>
-        </section>
       </div>
     </InstructorWorkspaceShell>
   )

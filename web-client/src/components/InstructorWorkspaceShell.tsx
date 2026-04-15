@@ -65,13 +65,13 @@ export default function InstructorWorkspaceShell({
         <div className="bg-orb bg-orb-tertiary bg-orb-bl" />
       </div>
 
-      <div className="relative mx-auto w-full max-w-[1400px] px-4 py-6 sm:px-6 lg:px-8">
-        <div className="grid items-start gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+      <div className="relative mx-auto w-full max-w-[1800px] px-4 py-8 sm:px-8 lg:px-12 flex-1">
+        <div className="grid items-start gap-8 lg:grid-cols-[300px_minmax(0,1fr)]">
 
           {/* ── Sidebar ── */}
-          <aside className="panel-raised p-4 sm:p-5 lg:sticky lg:top-6">
+          <aside className="panel-raised p-8 sm:p-8 lg:sticky lg:top-6">
             {/* Brand header */}
-            <div className="panel-inset flex items-center gap-3 px-3 py-3">
+            <div className="panel-inset flex items-center gap-3 px-4 py-4">
               <div
                 className="flex h-10 w-10 items-center justify-center rounded-2xl text-white"
                 style={{ background: 'linear-gradient(135deg, var(--primary), var(--primary-hover))' }}
@@ -110,10 +110,10 @@ export default function InstructorWorkspaceShell({
             </nav>
 
             {/* Logged-in user */}
-            <div className="panel-inset mt-6 p-3">
+            <div className="panel-inset mt-6 p-4">
               <p className="label-micro">Logged in as</p>
               <p
-                className="mt-2 truncate text-sm font-semibold"
+                className="mt-2.5 truncate text-sm font-semibold"
                 style={{ color: 'var(--text-main)' }}
               >
                 {instructorName}
@@ -124,7 +124,7 @@ export default function InstructorWorkspaceShell({
           {/* ── Main content ── */}
           <main className="space-y-6">
             {/* Page header */}
-            <header className="panel-raised px-5 py-5 sm:px-6">
+            <header className="panel-raised px-6 py-6 sm:px-7">
               <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
                 <div className="flex items-start gap-4">
                   <div

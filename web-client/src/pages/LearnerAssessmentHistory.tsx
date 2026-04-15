@@ -79,7 +79,7 @@ export default function LearnerAssessmentHistory() {
         <div className="grid gap-6">
 
           {/* ── Header ── */}
-          <header className="panel-raised px-5 py-5 sm:px-6 animate-rise">
+          <header className="panel-raised px-6 py-6 sm:px-7 animate-rise">
             <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
               <div className="flex items-start gap-4">
                 <div
@@ -140,11 +140,11 @@ export default function LearnerAssessmentHistory() {
           </section>
 
           {/* ── Attempt log ── */}
-          <section className="panel p-6">
+          <section className="panel p-7 sm:p-8">
             <div className="flex items-end justify-between gap-4">
               <div>
                 <p className="label-micro">Attempt log</p>
-                <h2 className="mt-2 heading-lg">Your submissions</h2>
+                <h2 className="mt-3 heading-lg">Your submissions</h2>
               </div>
               <span className="badge badge-neutral inline-flex items-center gap-2">
                 <Clock3 className="h-3.5 w-3.5" /> Newest first

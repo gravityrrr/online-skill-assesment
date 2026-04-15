@@ -180,146 +180,142 @@ export default function LearnerDashboard() {
   ]
 
   return (
-    <div className="app-page">
-      {/* Background orbs */}
-      <div className="bg-orbs">
-        <div className="bg-orb bg-orb-primary bg-orb-tl" />
-        <div className="bg-orb bg-orb-secondary bg-orb-tr" />
-        <div className="bg-orb bg-orb-tertiary bg-orb-bl" />
+    <div className="min-h-screen bg-[#0b0c0f] text-slate-200">
+      {/* Dynamic Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-600/10 blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-sky-600/10 blur-[120px]" />
       </div>
 
-      <div className="relative mx-auto w-full max-w-[1200px] px-4 py-8 sm:px-6 lg:px-8">
-        <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+      <div className="relative z-10 mx-auto w-full max-w-[1280px] px-4 py-8 sm:px-6 lg:px-8">
+        <div className="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
 
-          {/* ── Sidebar ── */}
-          <aside className="panel-raised p-4 sm:p-5 lg:sticky lg:top-6">
-            {/* Brand */}
-            <div className="panel-inset p-4">
-              <div className="flex items-start gap-3">
-                <div
-                  className="flex h-10 w-10 items-center justify-center rounded-2xl text-white"
-                  style={{ background: 'linear-gradient(135deg, var(--primary), var(--primary-hover))' }}
-                >
-                  <Sparkles className="h-5 w-5" />
+          {/* Sidebar */}
+          <aside className="space-y-6 lg:sticky lg:top-8">
+            <div className="rounded-[2rem] border border-white/5 bg-slate-900/40 p-6 backdrop-blur-xl shadow-2xl">
+              <div className="flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-600 text-white shadow-[0_0_20px_rgba(99,102,241,0.3)]">
+                  <Sparkles className="h-6 w-6" />
                 </div>
-                <div className="min-w-0">
-                  <p className="label-micro">Learner command</p>
-                  <h2 className="mt-1 text-base font-bold tracking-tight" style={{ color: 'var(--text-main)' }}>
-                    Focus dashboard
+                <div>
+                  <p className="text-[10px] font-extrabold uppercase tracking-widest text-indigo-400">Learner</p>
+                  <h2 className="mt-1 flex items-center gap-2 text-lg font-bold text-white tracking-tight">
+                    Focus Mode
                   </h2>
                 </div>
               </div>
-              <p className="mt-3 text-xs leading-5" style={{ color: 'var(--text-secondary)' }}>
-                Launch attempts fast, track progress, and keep momentum.
+              <p className="mt-5 text-sm text-slate-400 leading-relaxed">
+                Launch attempts fast, track your progression, and keep your momentum building.
               </p>
             </div>
 
-            {/* Nav */}
-            <nav className="mt-4 grid gap-2">
-              <p className="label-micro mb-1 px-1">Navigation</p>
-              <a href="#assessments" className="nav-link">
-                <span className="nav-link-icon"><BookOpenCheck className="h-4 w-4" /></span>
-                Assessment queue
-              </a>
-              <a href="#results" className="nav-link">
-                <span className="nav-link-icon"><History className="h-4 w-4" /></span>
-                Recent results
-              </a>
+            <nav className="rounded-[2rem] border border-white/5 bg-slate-900/40 p-4 backdrop-blur-xl shadow-2xl">
+              <p className="mb-4 px-2 text-[10px] font-extrabold uppercase tracking-widest text-slate-500">Navigation</p>
+              <div className="grid gap-1">
+                <a href="#assessments" className="group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition-colors hover:bg-white/5 hover:text-white">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 transition-colors group-hover:bg-indigo-500/20 group-hover:text-indigo-300">
+                    <BookOpenCheck className="h-4 w-4" />
+                  </span>
+                  Assessment Queue
+                </a>
+                <a href="#results" className="group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition-colors hover:bg-white/5 hover:text-white">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-500/10 text-sky-400 transition-colors group-hover:bg-sky-500/20 group-hover:text-sky-300">
+                    <History className="h-4 w-4" />
+                  </span>
+                  Recent Results
+                </a>
+              </div>
             </nav>
 
-            {/* Sidebar stats */}
-            <div className="mt-4 grid gap-3">
-              <div className="panel-inset p-4">
-                <p className="label-micro">Pass rate</p>
-                <p className="mt-2 text-2xl font-bold tracking-tight" style={{ color: 'var(--success)' }}>
-                  {passRate}%
-                </p>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="rounded-[1.5rem] border border-white/5 bg-slate-900/40 p-5 text-center backdrop-blur-xl shadow-lg transition-transform hover:scale-105">
+                <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-500">Pass Rate</p>
+                <p className="mt-2 text-2xl font-black text-emerald-400">{passRate}%</p>
               </div>
-              <div className="panel-inset p-4">
-                <p className="label-micro">Active assessments</p>
-                <p className="mt-2 text-2xl font-bold tracking-tight" style={{ color: 'var(--accent-sky)' }}>
-                  {activeAssessmentCount}
-                </p>
+              <div className="rounded-[1.5rem] border border-white/5 bg-slate-900/40 p-5 text-center backdrop-blur-xl shadow-lg transition-transform hover:scale-105">
+                <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-500">Active</p>
+                <p className="mt-2 text-2xl font-black text-sky-400">{activeAssessmentCount}</p>
               </div>
             </div>
           </aside>
 
-          {/* ── Main content ── */}
-          <main className="space-y-6">
-            {/* Header */}
-            <header className="panel-raised relative overflow-hidden px-6 py-7 animate-rise">
-              <div className="pointer-events-none absolute inset-0">
-                <div className="absolute -left-10 top-0 h-28 w-28 rounded-full bg-indigo-500/10 blur-2xl" />
-                <div className="absolute right-0 top-10 h-28 w-28 rounded-full" style={{ background: 'rgba(56,189,248,0.08)', filter: 'blur(40px)' }} />
-              </div>
-              <div className="relative flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
-                <div className="flex items-start gap-4">
-                  <div
-                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl"
-                    style={{ background: 'var(--primary-soft)', color: 'var(--primary)', border: '1px solid var(--primary-border)' }}
-                  >
-                    <Sparkles className="h-5 w-5" />
+          {/* Main Content */}
+          <main className="space-y-8">
+            {/* Header Banner */}
+            <header className="group relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-gradient-to-br from-indigo-900/30 via-slate-900/60 to-[#0b0c0f] p-8 sm:p-12 hover-lift hover-glow shadow-2xl animate-rise">
+              <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 mix-blend-overlay"></div>
+              <div className="absolute -right-20 -top-20 h-[300px] w-[300px] rounded-full bg-indigo-500/10 blur-[80px] transition-all duration-700 group-hover:bg-indigo-400/20" />
+              
+              <div className="relative z-10 flex flex-col gap-8 xl:flex-row xl:items-center xl:justify-between">
+                <div className="flex items-start gap-5">
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 shadow-[0_0_30px_rgba(99,102,241,0.15)]">
+                    <Target className="h-6 w-6" />
                   </div>
                   <div className="min-w-0">
-                    <p className="label-micro">Learner dashboard</p>
-                    <h1
-                      className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl"
-                      style={{ color: 'var(--text-main)', letterSpacing: '-0.025em' }}
-                    >
-                      Welcome back, <span style={{ color: 'var(--primary)' }}>{learnerLabel}</span>
+                    <p className="bg-gradient-to-r from-indigo-400 to-sky-400 bg-clip-text text-[10px] font-black uppercase tracking-[0.2em] text-transparent">
+                      Learner Dashboard
+                    </p>
+                    <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+                      Welcome back, <span className="text-transparent bg-gradient-to-r from-indigo-300 to-sky-300 bg-clip-text">{learnerLabel.split('@')[0]}</span>
                     </h1>
-                    <p className="mt-2 max-w-3xl text-sm leading-6" style={{ color: 'var(--text-secondary)' }}>
-                      Your personal command center for starting assessments, tracking attempts, and reviewing results.
+                    <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-400">
+                      Your personal command center for starting assessments, pushing your boundaries, and tracking your steady progression.
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center xl:justify-end">
-                  <button type="button" className="btn-icon" onClick={() => void fetchData()} title="Refresh" aria-label="Refresh">
+                <div className="flex items-center gap-3">
+                  <button type="button" onClick={() => void fetchData()} className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-300 transition-all hover:bg-white/10 hover:text-white" title="Refresh">
                     <RefreshCcw className="h-4 w-4" />
                   </button>
-                  <button type="button" className="btn-danger" style={{ fontSize: '0.8rem', padding: '9px 14px' }} onClick={handleSignOut}>
-                    <LogOut className="h-4 w-4" /> Sign out
+                  <button type="button" onClick={handleSignOut} className="flex h-10 items-center justify-center gap-2 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 text-sm font-semibold text-rose-400 transition-all hover:bg-rose-500/20 hover:text-rose-300">
+                    <LogOut className="h-4 w-4" /> Sign Out
                   </button>
                 </div>
               </div>
             </header>
 
-            {/* Error */}
             {error && (
-              <div className="alert alert-error">
-                <AlertCircle className="alert-icon h-4 w-4" />
-                {error}
+              <div className="flex items-center gap-3 rounded-2xl border border-rose-500/30 bg-rose-500/10 px-6 py-4 text-sm text-rose-200 backdrop-blur-md">
+                <AlertCircle className="h-5 w-5 shrink-0 text-rose-400" />
+                <p>{error}</p>
               </div>
             )}
 
-            {/* ── Stat cards ── */}
+            {/* Stat Cards */}
             <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
               {statCards.map(({ label, value, sub, Icon, color, bg }, i) => (
-                <article key={label} className={`panel stat-card stagger-${i + 1} animate-rise`}>
-                  <div className="stat-card-body">
-                    <p className="stat-card-label">{label}</p>
-                    <p className="stat-card-value stat-number">{value}</p>
-                    <p className="stat-card-sub">{sub}</p>
-                  </div>
-                  <div className={`stat-card-icon ${bg} ${color} border`} style={{ borderColor: 'var(--surface-border)' }}>
-                    <Icon className="h-5 w-5" />
+                <article key={label} className="group relative overflow-hidden rounded-[2rem] border border-white/5 bg-slate-900/40 p-6 backdrop-blur-xl hover-lift shadow-lg">
+                  <div className={`absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${bg.replace('/10', '/5')}`} />
+                  <div className="relative z-10 flex flex-col h-full justify-between">
+                    <div className="flex items-start justify-between">
+                      <div className={`flex h-10 w-10 items-center justify-center rounded-[14px] ${bg} ${color} transition-transform duration-300 group-hover:scale-110`}>
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-500 max-w-[100px] text-right">{label}</p>
+                    </div>
+                    <div className="mt-6">
+                      <p className="text-4xl font-extrabold text-white tracking-tighter">{value}</p>
+                      <p className="mt-1 text-xs text-slate-400">{sub}</p>
+                    </div>
                   </div>
                 </article>
               ))}
             </section>
 
-            {/* ── Assessment queue ── */}
-            <section id="assessments" className="panel p-7">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            {/* Assessment Queue */}
+            <section id="assessments" className="rounded-[2.5rem] border border-white/5 bg-[#101218]/60 p-8 sm:p-10 backdrop-blur-xl shadow-2xl">
+              <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between border-b border-white/5 pb-8">
                 <div>
-                  <p className="label-micro">Assessment queue</p>
-                  <h2 className="mt-2 heading-lg">Start a new attempt</h2>
+                  <p className="bg-gradient-to-r from-indigo-400 to-sky-400 bg-clip-text text-[10px] font-extrabold uppercase tracking-[0.2em] text-transparent">
+                    Assessment Queue
+                  </p>
+                  <h2 className="mt-2 text-2xl font-bold tracking-tight text-white">Ready for Action</h2>
                 </div>
-                <div className="input-with-icon w-full max-w-md sm:w-[340px]">
-                  <Search className="input-icon-left h-4 w-4" />
+                <div className="relative w-full sm:w-[320px]">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                   <input
-                    className="input-field"
-                    placeholder="Filter by assessment or course"
+                    className="w-full rounded-full border border-white/10 bg-black/40 py-2.5 pl-11 pr-4 text-sm text-white placeholder-slate-500 backdrop-blur-md focus:border-indigo-500/50 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all"
+                    placeholder="Filter by title..."
                     value={assessmentSearch}
                     onChange={e => { setAssessmentSearch(e.target.value); setAssessmentPage(1) }}
                   />
@@ -327,164 +323,167 @@ export default function LearnerDashboard() {
               </div>
 
               {loading ? (
-                <div className="mt-5 space-y-3">
-                  {[1, 2, 3].map(i => <div key={i} className="skeleton h-32" />)}
+                <div className="mt-8 space-y-4">
+                  {[1, 2, 3].map(i => <div key={i} className="h-32 rounded-2xl bg-white/5 animate-pulse" />)}
                 </div>
               ) : filteredAssessments.length === 0 ? (
-                <div className="mt-5 empty-state">
-                  <div className="empty-state-icon">
-                    <BookOpenCheck className="h-6 w-6" />
+                <div className="mt-8 flex flex-col items-center justify-center min-h-[300px] rounded-3xl border border-dashed border-white/10 bg-white/[0.02] p-10 text-center">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-400">
+                    <BookOpenCheck className="h-8 w-8" />
                   </div>
-                  <p className="empty-state-title">No assessments yet</p>
-                  <p className="empty-state-body">
-                    {assessmentSearch ? 'Try a different filter.' : 'Check back when new assessments are published.'}
+                  <h3 className="mt-5 text-lg font-bold text-white">Queue Empty</h3>
+                  <p className="mt-2 text-sm text-slate-400 max-w-sm">
+                    {assessmentSearch ? 'We couldnt find any assessments matching your filter.' : 'You have no assessments pending. Great job staying on top of your work!'}
                   </p>
                 </div>
               ) : (
                 <>
-                  <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {pagedAssessments.map(assessment => {
                       const progress = progressByAssessment[assessment.assessment_id]
                       const latestStatus = progress?.latestStatus ?? 'none'
                       return (
-                        <article key={assessment.assessment_id} className="panel-interactive p-6">
-                          <p className="label-micro">{courses[assessment.course_id] || 'Unknown course'}</p>
-                          <h3 className="mt-2 heading-md">{assessment.title}</h3>
+                        <article key={assessment.assessment_id} className="group flex flex-col rounded-[2rem] border border-white/5 bg-black/40 p-6 backdrop-blur-md transition-all hover:-translate-y-2 hover:bg-slate-900/60 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+                          <p className="text-[10px] font-black uppercase tracking-widest text-indigo-400 line-clamp-1">{courses[assessment.course_id] || 'General'}</p>
+                          <h3 className="mt-2 text-lg font-bold text-white tracking-tight line-clamp-2 min-h-[56px]">{assessment.title}</h3>
 
-                          <div className="mt-4 grid grid-cols-2 gap-2">
-                            <div className="panel-inset px-3 py-2">
-                              <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>Time limit</p>
-                              <p className="mt-1 text-sm font-semibold" style={{ color: 'var(--text-main)' }}>
-                                {assessment.time_limit} min
-                              </p>
+                          <div className="mt-6 flex justify-between rounded-xl bg-white/5 p-4">
+                            <div>
+                              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Duration</p>
+                              <p className="mt-1 text-sm font-semibold text-slate-200">{assessment.time_limit}m</p>
                             </div>
-                            <div className="panel-inset px-3 py-2">
-                              <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>Best score</p>
-                              <p className="mt-1 text-sm font-semibold font-numeric" style={{ color: 'var(--text-main)' }}>
-                                {progress?.bestScore ?? 0}%
-                              </p>
+                            <div className="text-right">
+                              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Best Score</p>
+                              <p className="mt-1 text-lg font-black text-sky-400 leading-none">{progress?.bestScore ?? 0}%</p>
                             </div>
                           </div>
 
-                          <div className="mt-3 flex items-center justify-between">
-                            <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>
-                              Attempts: {progress?.attempts ?? 0}
-                            </span>
-                            {latestStatus === 'none' ? (
-                              <span className="badge badge-neutral">No result yet</span>
-                            ) : latestStatus === 'pass' ? (
-                              <span className="badge badge-pass"><CheckCircle2 className="h-3 w-3" /> Last: pass</span>
-                            ) : (
-                              <span className="badge badge-fail"><XCircle className="h-3 w-3" /> Last: fail</span>
-                            )}
-                          </div>
-
-                          <div className="mt-4 flex flex-wrap gap-2">
-                            <button
-                              type="button"
-                              className="btn-primary"
-                              onClick={() => navigate(`/assessments/${assessment.assessment_id}/take`)}
-                            >
-                              <PlayCircle className="h-4 w-4" />
-                              Start assessment
-                            </button>
-                            <button
-                              type="button"
-                              className="btn-secondary"
-                              onClick={() => navigate(`/assessments/${assessment.assessment_id}/history`)}
-                            >
-                              <History className="h-4 w-4" />
-                              History
-                            </button>
+                          <div className="mt-5 flex items-center justify-between border-t border-white/5 pt-5">
+                            <div className="flex flex-col">
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Status</span>
+                              <div className="mt-1 flex items-center gap-1.5">
+                                {latestStatus === 'none' ? (
+                                  <span className="text-xs font-semibold text-slate-400">Untouched</span>
+                                ) : latestStatus === 'pass' ? (
+                                  <span className="flex items-center gap-1 text-xs font-bold text-emerald-400"><CheckCircle2 className="h-3.5 w-3.5" /> Passed</span>
+                                ) : (
+                                  <span className="flex items-center gap-1 text-xs font-bold text-rose-400"><XCircle className="h-3.5 w-3.5" /> Failed</span>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => navigate(`/assessments/${assessment.assessment_id}/history`)}
+                                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/5 text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
+                                title="History"
+                              >
+                                <History className="h-4 w-4" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => navigate(`/assessments/${assessment.assessment_id}/take`)}
+                                className="flex h-9 items-center gap-2 rounded-full bg-indigo-500/20 px-4 text-xs font-bold text-indigo-300 transition-all hover:bg-indigo-500/30 hover:text-white"
+                              >
+                                Start
+                                <PlayCircle className="h-3.5 w-3.5" />
+                              </button>
+                            </div>
                           </div>
                         </article>
                       )
                     })}
                   </div>
 
-                  <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-                    <button type="button" className="btn-secondary" disabled={assessmentPage <= 1} onClick={() => setAssessmentPage(p => Math.max(1, p - 1))}>
-                      Previous
-                    </button>
-                    <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-                      Page {Math.min(assessmentPage, assessmentPages)} of {assessmentPages}
-                    </span>
-                    <button type="button" className="btn-secondary" disabled={assessmentPage >= assessmentPages} onClick={() => setAssessmentPage(p => Math.min(assessmentPages, p + 1))}>
-                      Next
-                    </button>
-                  </div>
+                  {assessmentPages > 1 && (
+                    <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+                      <button type="button" className="rounded-full bg-white/5 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-white/5" disabled={assessmentPage <= 1} onClick={() => setAssessmentPage(p => Math.max(1, p - 1))}>
+                        Prev
+                      </button>
+                      <span className="text-sm font-medium text-slate-400">
+                        {Math.min(assessmentPage, assessmentPages)} / {assessmentPages}
+                      </span>
+                      <button type="button" className="rounded-full bg-indigo-500/10 border border-indigo-500/20 px-5 py-2 text-sm font-bold text-indigo-300 transition-all hover:bg-indigo-500/20 disabled:opacity-30" disabled={assessmentPage >= assessmentPages} onClick={() => setAssessmentPage(p => Math.min(assessmentPages, p + 1))}>
+                        Next
+                      </button>
+                    </div>
+                  )}
                 </>
               )}
             </section>
 
-            {/* ── Recent results ── */}
-            <section id="results" className="panel p-7">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            {/* Recent Results */}
+            <section id="results" className="rounded-[2.5rem] border border-white/5 bg-[#101218]/60 p-8 sm:p-10 backdrop-blur-xl shadow-2xl">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between border-b border-white/5 pb-8">
                 <div>
-                  <p className="label-micro">Recent activity</p>
-                  <h2 className="mt-2 heading-lg">Latest results</h2>
+                  <p className="bg-gradient-to-r from-emerald-400 to-sky-400 bg-clip-text text-[10px] font-extrabold uppercase tracking-[0.2em] text-transparent">
+                    History
+                  </p>
+                  <h2 className="mt-2 text-2xl font-bold tracking-tight text-white">Latest Submissions</h2>
                 </div>
-                <span className="badge badge-neutral inline-flex items-center gap-2">
-                  <Clock3 className="h-3.5 w-3.5" /> Newest first
+                <span className="inline-flex items-center gap-2 rounded-xl bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300">
+                  <Clock3 className="h-3.5 w-3.5" /> Newest First
                 </span>
               </div>
 
               {recentResults.length === 0 ? (
-                <div className="mt-5 empty-state">
-                  <div className="empty-state-icon" style={{ background: 'var(--primary-soft)', borderColor: 'var(--primary-border)', color: 'var(--accent-sky)' }}>
-                    <History className="h-6 w-6" />
+                <div className="mt-8 flex flex-col items-center justify-center min-h-[240px] rounded-3xl border border-dashed border-white/10 bg-white/[0.02] p-10 text-center">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-800 text-slate-400">
+                    <History className="h-8 w-8" />
                   </div>
-                  <p className="empty-state-title">No attempts submitted yet</p>
-                  <p className="empty-state-body">Complete your first assessment to unlock results history.</p>
+                  <p className="mt-4 text-sm text-slate-500">Your recent attempts will populate here.</p>
                 </div>
               ) : (
                 <>
-                  <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  <div className="mt-8 grid gap-4 lg:grid-cols-2">
                     {pagedResults.map(result => {
                       const assessmentTitle = assessments.find(a => a.assessment_id === result.assessment_id)?.title || 'Unknown assessment'
+                      const isPass = result.status === 'pass'
                       return (
-                        <article key={result.result_id} className="panel-interactive p-6">
-                          <div className="flex items-start justify-between gap-3">
-                            <div>
-                              <p className="label-micro">{assessmentTitle}</p>
-                              <p className="mt-2 stat-number font-numeric" style={{ color: 'var(--text-main)' }}>
-                                {result.score}%
-                              </p>
+                        <article key={result.result_id} className="group relative flex items-center justify-between gap-4 rounded-2xl border border-white/5 bg-black/40 p-5 transition-all hover:bg-slate-900/60 hover:shadow-lg">
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate text-sm font-bold text-white group-hover:text-indigo-200 transition-colors">{assessmentTitle}</p>
+                            <div className="mt-2 flex items-center gap-3">
+                              <span className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-black uppercase tracking-wider ${isPass ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
+                                {isPass ? <CheckCircle2 className="h-3 w-3" /> : <XCircle className="h-3 w-3" />}
+                                {result.status}
+                              </span>
+                              <span className="text-[10px] font-semibold text-slate-500">{formatTime(result.created_at)}</span>
                             </div>
-                            <span className={`badge ${result.status === 'pass' ? 'badge-pass' : 'badge-fail'}`}>
-                              {result.status === 'pass'
-                                ? <><CheckCircle2 className="h-3 w-3" /> Pass</>
-                                : <><XCircle className="h-3 w-3" /> Fail</>}
-                            </span>
                           </div>
-                          <p className="mt-3 text-xs" style={{ color: 'var(--text-muted)' }}>{formatTime(result.created_at)}</p>
+                          <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-xl bg-white/5 border border-white/5 text-center">
+                            <span className="text-lg font-black leading-none text-white">{result.score}</span>
+                            <span className="text-[8px] font-bold text-slate-400 uppercase">Score</span>
+                          </div>
                           <button
                             type="button"
-                            className="btn-secondary mt-4 w-full"
                             onClick={() => navigate(`/assessments/${result.assessment_id}/history`)}
+                            className="absolute inset-0 z-10 w-full h-full opacity-0 hover:cursor-pointer"
+                            title="View full history"
                           >
-                            View full history
-                            <ArrowUpRight className="h-4 w-4" />
                           </button>
                         </article>
                       )
                     })}
                   </div>
 
-                  <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-                    <button type="button" className="btn-secondary" disabled={resultsPage <= 1} onClick={() => setResultsPage(p => Math.max(1, p - 1))}>
-                      Previous
-                    </button>
-                    <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-                      Page {Math.min(resultsPage, resultsPages)} of {resultsPages}
-                    </span>
-                    <button type="button" className="btn-secondary" disabled={resultsPage >= resultsPages} onClick={() => setResultsPage(p => Math.min(resultsPages, p + 1))}>
-                      Next
-                    </button>
-                  </div>
+                  {resultsPages > 1 && (
+                    <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+                      <button type="button" className="rounded-full bg-white/5 px-4 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-white/5" disabled={resultsPage <= 1} onClick={() => setResultsPage(p => Math.max(1, p - 1))}>
+                        Prev
+                      </button>
+                      <span className="text-xs font-medium text-slate-400">
+                        {Math.min(resultsPage, resultsPages)} / {resultsPages}
+                      </span>
+                      <button type="button" className="rounded-full bg-white/5 px-4 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-white/10 disabled:opacity-30" disabled={resultsPage >= resultsPages} onClick={() => setResultsPage(p => Math.min(resultsPages, p + 1))}>
+                        Next
+                      </button>
+                    </div>
+                  )}
                 </>
               )}
             </section>
+
           </main>
         </div>
       </div>

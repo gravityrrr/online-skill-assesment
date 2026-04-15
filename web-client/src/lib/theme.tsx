@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 export type ThemeMode = 'light' | 'dark'
@@ -16,7 +17,7 @@ function resolveInitialTheme(): ThemeMode {
   return 'dark'
 }
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<ThemeMode>(() => resolveInitialTheme())
 
   useEffect(() => {
@@ -36,9 +37,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
 export function useTheme() {
   const ctx = useContext(ThemeContext)
-  if (!ctx) {
-    throw new Error('useTheme must be used within ThemeProvider')
-  }
+  if (!ctx) throw new Error('useTheme must be used within ThemeProvider')
   return ctx
 }
 

@@ -94,10 +94,10 @@ export default function DynamicAuth({ role, type }: AuthProps) {
       </div>
 
       <div className="relative flex min-h-screen items-center justify-center px-4 py-12">
-        <div className="panel w-full max-w-[440px] animate-rise p-7 sm:p-8">
+        <div className="panel w-full max-w-[440px] animate-rise p-8 sm:p-10">
 
           {/* ── Header ── */}
-          <div className="flex flex-col items-center gap-3 text-center">
+          <div className="flex flex-col items-center gap-4 text-center">
             <div
               className="flex h-14 w-14 items-center justify-center rounded-2xl"
               style={iconConfig.iconStyle}
@@ -111,7 +111,7 @@ export default function DynamicAuth({ role, type }: AuthProps) {
             >
               {type === 'Login' ? 'Welcome back' : `Create ${contextLabel.toLowerCase()} account`}
             </h1>
-            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+            <p className="mt-1 text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
               Use your registered email and password to continue securely.
             </p>
           </div>
@@ -131,7 +131,7 @@ export default function DynamicAuth({ role, type }: AuthProps) {
           )}
 
           {/* ── Form ── */}
-          <form onSubmit={handleSubmit} className="mt-6 space-y-3">
+          <form onSubmit={handleSubmit} className="mt-7 space-y-4">
             {type === 'Register' && !isAdmin && (
               <div className="input-with-icon">
                 <User className="input-icon-left h-4 w-4" />
@@ -194,7 +194,7 @@ export default function DynamicAuth({ role, type }: AuthProps) {
           </form>
 
           {/* ── Footer ── */}
-          <div className="mt-6 space-y-3 text-center">
+          <div className="mt-8 space-y-4 text-center">
             {!isAdmin && (
               <button
                 type="button"
